@@ -61,13 +61,13 @@
     _currentPage = MIN(MAX(0, _currentPage), _numberOfPages - 1);
 
 	// Clear up images
-	if (self.inactiveImages.count > 0) {
+	if (self.inactiveImages.count > _numberOfPages) {
 		self.inactiveImages = [[self.inactiveImages
-			subarrayWithRange:NSMakeRange(0, pages)] mutableCopy];
+			subarrayWithRange:NSMakeRange(0, _numberOfPages)] mutableCopy];
 	}
-	if (self.activeImages.count > 0) {
+	if (self.activeImages.count > _numberOfPages) {
 		self.activeImages = [[self.activeImages
-			subarrayWithRange:NSMakeRange(0, pages)] mutableCopy];
+			subarrayWithRange:NSMakeRange(0, _numberOfPages)] mutableCopy];
 	}
 	
     [self setNeedsDisplay];
@@ -76,15 +76,18 @@
 /** @brief Sets image for page indicator at index */
 - (void)setPageImage:(NSInteger)page withImage:(UIImage*)image forState:(CustomPageControlImageState)state
 {
-	switch (state) {
-		case CustomPageControlImageStateActive:
-			[self.activeImages setObject:image atIndexedSubscript:page];
-			break;
+	if (page < self.numberOfPages)
+	{
+		switch (state) {
+			case CustomPageControlImageStateActive:
+				[self.activeImages setObject:image atIndexedSubscript:page];
+				break;
 
-		case CustomPageControlImageStateInactive:
-		default:
-			[self.inactiveImages setObject:image atIndexedSubscript:page];
-			break;
+			case CustomPageControlImageStateInactive:
+			default:
+				[self.inactiveImages setObject:image atIndexedSubscript:page];
+				break;
+		}
 	}
 }
 
