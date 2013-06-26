@@ -1,4 +1,4 @@
-ios-objc-custom-page-control
+CustomImagePageControl
 ============================
 
 Custom PageControl that can draw images as well as dots as page indicators. Simply stores two extra arrays that hold images for active and inactive states for each page.
