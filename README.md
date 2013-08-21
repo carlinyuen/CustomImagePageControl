@@ -16,10 +16,10 @@ From there, the customization is all yours!
 ### Customization
 Extra properties you can customize:
 
- * _dotTintColor_ (UIColor) Color for usual dot.
- * _currentDotTintColor_ (UIColor) Color for current highlighted dot.
- * _dotDiameter_ (CGFloat) Size of dot in points.
- * _dotSpacing_ (CGFloat) Space between each dot in points.
+ * __dotTintColor (UIColor)__ Color for usual dot.
+ * __currentDotTintColor (UIColor)__ Color for current highlighted dot.
+ * __dotDiameter (CGFloat)__ Size of dot in points.
+ * __dotSpacing (CGFloat)__ Space between each dot in points.
 
 *Note: You should set numberOfPages before currentPage / setPageImage. Lowering
 the numberOfPages will truncate the image arrays, so you may have to reset
