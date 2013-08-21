@@ -14,25 +14,30 @@
 
 @protocol CustomPageControlDelegate;
 
-typedef enum {
-	CustomPageControlImageStateInactive,
-	CustomPageControlImageStateActive
-} CustomPageControlImageState;
+	typedef enum {
+		CustomPageControlImageStateInactive,
+		CustomPageControlImageStateActive
+	} CustomPageControlImageState;
 
 @interface CustomPageControl : UIView
 
-// Set these to control the CustomPageControl.
-@property (nonatomic, assign) NSInteger currentPage;
-@property (nonatomic, assign) NSInteger numberOfPages;
+	/* Set these to control the CustomPageControl. */
+	@property (nonatomic, assign) NSInteger currentPage;
+	@property (nonatomic, assign) NSInteger numberOfPages;
 
-// Customize these as well as the backgroundColor property.
-@property (nonatomic, strong) UIColor *dotColorCurrentPage;
-@property (nonatomic, strong) UIColor *dotColorOtherPage;
+	/* Customize spacing & dot size */
+	@property (nonatomic, assign) CGFloat dotDiameter;
+	@property (nonatomic, assign) CGFloat dotSpacing;
 
-// Optional delegate for callbacks when user taps a page dot.
-@property (nonatomic, weak) NSObject<CustomPageControlDelegate> *delegate;
+	/* Custom dot colors */
+	@property (nonatomic, strong) UIColor *currentDotTintColor;
+	@property (nonatomic, strong) UIColor *dotTintColor;
 
-- (void)setPageImage:(NSInteger)page withImage:(UIImage*)image forState:(CustomPageControlImageState)state;
+	/* Optional delegate for callbacks when user taps a page dot. */
+	@property (nonatomic, weak) NSObject<CustomPageControlDelegate> *delegate;
+
+	/** @brief Set image for a page indicator at a given index */
+	- (void)setPageImage:(NSInteger)page withImage:(UIImage*)image forState:(CustomPageControlImageState)state;
 
 @end
 
@@ -41,5 +46,7 @@ typedef enum {
 
 @protocol CustomPageControlDelegate<NSObject>
 @optional
-- (void)pageControlPageDidChange:(CustomPageControl *)pageControl;
+
+	- (void)pageControlPageDidChange:(CustomPageControl *)pageControl;
+
 @end

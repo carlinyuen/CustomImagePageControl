@@ -8,8 +8,8 @@
 
 
 // Tweak these or make them dynamic.
-#define kDotDiameter 7.0
-#define kDotSpacer 7.0
+#define kDefaultDotDiameter 7.0
+#define kDefaultDotSpacing 10.0
 
 
 #import "CustomPageControl.h"
@@ -33,10 +33,12 @@
     self = [super initWithFrame:frame];
     if (self)
 	{
-		// Default colors.
+		// Default settings
+		self.dotDiameter = kDefaultDotDiameter;
+		self.dotSpacing	= kDefaultDotSpacing;
         self.backgroundColor = [UIColor clearColor];
-        self.dotColorCurrentPage = [UIColor blackColor];
-        self.dotColorOtherPage = [UIColor lightGrayColor];
+        self.currentDotTintColor = [UIColor darkGrayColor];
+        self.dotTintColor = [UIColor lightGrayColor];
 		
 		// Initialize images
 		self.inactiveImages = [NSMutableArray array];
@@ -97,19 +99,21 @@
     CGContextSetAllowsAntialiasing(context, true);
 
     CGRect currentBounds = self.bounds;
-    CGFloat dotsWidth = self.numberOfPages*kDotDiameter + MAX(0, self.numberOfPages-1)*kDotSpacer;
-    CGFloat x = CGRectGetMidX(currentBounds)-dotsWidth/2;
-    CGFloat y = CGRectGetMidY(currentBounds)-kDotDiameter/2;
+    CGFloat dotsWidth = self.numberOfPages * self.dotDiameter
+		+ MAX(0, self.numberOfPages - 1) * self.dotSpacing;
+    CGFloat x = CGRectGetMidX(currentBounds) - dotsWidth / 2;
+    CGFloat y = CGRectGetMidY(currentBounds) - self.dotDiameter / 2;
+	
     for (int i=0; i<_numberOfPages; i++)
     {
 		UIImage* image;
-        CGRect circleRect = CGRectMake(x, y, kDotDiameter, kDotDiameter);
+        CGRect circleRect = CGRectMake(x, y, self.dotDiameter, self.dotDiameter);
         if (i == _currentPage)
         {
 			if (self.activeImages.count > i) {
 				image = [self.activeImages objectAtIndex:i];
 			} else {
-				CGContextSetFillColorWithColor(context, self.dotColorCurrentPage.CGColor);
+				CGContextSetFillColorWithColor(context, self.currentDotTintColor.CGColor);
 			}
         }
         else
@@ -117,45 +121,46 @@
 			if (self.inactiveImages.count > i) {
 				image = [self.inactiveImages objectAtIndex:i];
 			} else {
-				CGContextSetFillColorWithColor(context, self.dotColorOtherPage.CGColor);
+				CGContextSetFillColorWithColor(context, self.dotTintColor.CGColor);
 			}
         }
 	
 		// If image exists, draw it
 		if (image && image != (id)[NSNull null])
 		{
-			circleRect.origin.x -= kDotDiameter / 4;
-			circleRect.origin.y -= kDotDiameter / 4;
-			circleRect.size.width += kDotDiameter / 2;
-			circleRect.size.height += kDotDiameter / 2;
+			circleRect.origin.x -= self.dotDiameter / 4;
+			circleRect.origin.y -= self.dotDiameter / 4;
+			circleRect.size.width += self.dotDiameter / 2;
+			circleRect.size.height += self.dotDiameter / 2;
 			CGContextDrawImage(context, circleRect, image.CGImage);
 		}
 		else {	// Standard dot
 			CGContextFillEllipseInRect(context, circleRect);
 		}
 			
-        x += kDotDiameter + kDotSpacer;
+        x += self.dotDiameter + self.dotSpacing;
     }
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    if (!self.delegate) return;
+    if (!self.delegate)
+		return;
 
     CGPoint touchPoint = [[[event touchesForView:self] anyObject] locationInView:self];
 
-    CGFloat dotSpanX = self.numberOfPages*(kDotDiameter + kDotSpacer);
-    CGFloat dotSpanY = kDotDiameter + kDotSpacer;
+    CGFloat dotSpanX = self.numberOfPages * (self.dotDiameter + self.dotSpacing);
+    CGFloat dotSpanY = self.dotDiameter + self.dotSpacing;
 
     CGRect currentBounds = self.bounds;
-    CGFloat x = touchPoint.x + dotSpanX/2 - CGRectGetMidX(currentBounds);
-    CGFloat y = touchPoint.y + dotSpanY/2 - CGRectGetMidY(currentBounds);
+    CGFloat x = touchPoint.x + dotSpanX / 2 - CGRectGetMidX(currentBounds);
+    CGFloat y = touchPoint.y + dotSpanY / 2 - CGRectGetMidY(currentBounds);
 
-    if ((x<0) || (x>dotSpanX) || (y<0) || (y>dotSpanY)) return;
+    if ((x < 0) || (x > dotSpanX) || (y < 0) || (y > dotSpanY))
+		return;
 
-    self.currentPage = floor(x/(kDotDiameter+kDotSpacer));
-    if ([self.delegate respondsToSelector:@selector(pageControlPageDidChange:)])
-    {
+    self.currentPage = floor(x / (self.dotDiameter + self.dotSpacing));
+    if ([self.delegate respondsToSelector:@selector(pageControlPageDidChange:)]) {
         [self.delegate pageControlPageDidChange:self];
     }
 }
