@@ -1,7 +1,7 @@
 /**
-	@file	CustomPageControl.m
+	@file	CustomImagePageControl.m
 	@author	Carlin
-	@date	6/12/13
+	@date	11/19/13
 	@brief	Custom page indicator control element that lets you use images as well.
 */
 //  Copyright (c) 2013 Carlin Yuen. All rights reserved.
@@ -12,9 +12,9 @@
 #define kDefaultDotSpacing 10.0
 
 
-#import "CustomPageControl.h"
+#import "CustomImagePageControl.h"
 
-@interface CustomPageControl ()
+@interface CustomImagePageControl ()
 
 	/** Custom images */
 	@property (nonatomic, strong) NSMutableArray* inactiveImages;
@@ -25,7 +25,7 @@
 
 #pragma mark - Implementation
 
-@implementation CustomPageControl
+@implementation CustomImagePageControl
 
 /** @brief Initialize data-related properties */
 - (id)initWithFrame:(CGRect)frame
@@ -37,8 +37,8 @@
 		self.dotDiameter = kDefaultDotDiameter;
 		self.dotSpacing	= kDefaultDotSpacing;
         self.backgroundColor = [UIColor clearColor];
-        self.currentDotTintColor = [UIColor darkGrayColor];
-        self.dotTintColor = [UIColor lightGrayColor];
+        self.currentPageIndicatorTintColor = [UIColor darkGrayColor];
+        self.pageIndicatorTintColor = [UIColor lightGrayColor];
 		
 		// Initialize images
 		self.inactiveImages = [NSMutableArray array];
@@ -76,16 +76,16 @@
 }
 
 /** @brief Sets image for page indicator at index */
-- (void)setPageImage:(NSInteger)page withImage:(UIImage*)image forState:(CustomPageControlImageState)state
+- (void)setPageImage:(NSInteger)page withImage:(UIImage*)image forState:(CustomImagePageControlImageState)state
 {
 	if (page < self.numberOfPages)
 	{
 		switch (state) {
-			case CustomPageControlImageStateActive:
+			case CustomImagePageControlImageStateActive:
 				[self.activeImages setObject:image atIndexedSubscript:page];
 				break;
 
-			case CustomPageControlImageStateInactive:
+			case CustomImagePageControlImageStateInactive:
 			default:
 				[self.inactiveImages setObject:image atIndexedSubscript:page];
 				break;
@@ -113,7 +113,7 @@
 			if (self.activeImages.count > i) {
 				image = [self.activeImages objectAtIndex:i];
 			} else {
-				CGContextSetFillColorWithColor(context, self.currentDotTintColor.CGColor);
+				CGContextSetFillColorWithColor(context, self.currentPageIndicatorTintColor.CGColor);
 			}
         }
         else
@@ -121,7 +121,7 @@
 			if (self.inactiveImages.count > i) {
 				image = [self.inactiveImages objectAtIndex:i];
 			} else {
-				CGContextSetFillColorWithColor(context, self.dotTintColor.CGColor);
+				CGContextSetFillColorWithColor(context, self.pageIndicatorTintColor.CGColor);
 			}
         }
 	

@@ -11,13 +11,14 @@ Super simple setup and usage:
  4. Set numberOfPages, then currentPage, then setPageImage:withImage:forState: accordingly.
  5. Add delegate to capture when user taps on a page indicator.
 
-From there, the customization is all yours!
+From there, the customization is all yours! It's also really easy to swap it in
+to replace a regular UIPageControl.
 
 ### Customization
-Extra properties you can customize:
+Properties you can customize:
 
- * __dotTintColor (UIColor)__ Color for usual dot.
- * __currentDotTintColor (UIColor)__ Color for current highlighted dot.
+ * __pageIndicatorTintColor (UIColor)__ Color for usual dot.
+ * __currentPageIndicatorTintColor (UIColor)__ Color for current highlighted dot.
  * __dotDiameter (CGFloat)__ Size of dot in points.
  * __dotSpacing (CGFloat)__ Space between each dot in points.
 
